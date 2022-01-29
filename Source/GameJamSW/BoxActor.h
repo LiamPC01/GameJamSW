@@ -22,6 +22,15 @@ protected:
 
 public:	
 
+	UPROPERTY(EditAnywhere, Category = "Movement")
+		float PitchValue;
+
+	UPROPERTY(EditAnywhere, Category = "Movement")
+		float YawValue;
+
+	UPROPERTY(EditAnywhere, Category = "Movement")
+		float RollValue;
+
 	AGameJamSWCharacter * GameJamSWCharacter;
 
 	// Called every frame
