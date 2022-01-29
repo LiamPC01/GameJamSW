@@ -4,6 +4,7 @@
 #include "BoxActor.h"
 #include "Components/BoxComponent.h"
 #include "Engine/Engine.h"
+#include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 
 // Sets default values
 ABoxActor::ABoxActor()
@@ -25,6 +26,7 @@ void ABoxActor::BeginPlay()
 {
 	Super::BeginPlay();
 
+	GameJamSWCharacter = Cast<AGameJamSWCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 }
 
 // Called every frame
@@ -36,7 +38,10 @@ void ABoxActor::Tick(float DeltaTime)
 
 void ABoxActor::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Yellow, "Overlap Begin Function Called");
+	if (GameJamSWCharacter && GameJamSWCharacter == OtherActor)
+	{
+		GameJamSWCharacter->AddDebugMessage();
+	}
 }
 
 void ABoxActor::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)

@@ -8,6 +8,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Engine/Engine.h"
 
 //////////////////////////////////////////////////////////////////////////
 // AGameJamSWCharacter
@@ -74,6 +75,11 @@ void AGameJamSWCharacter::SetupPlayerInputComponent(class UInputComponent* Playe
 
 	// VR headset functionality
 	PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &AGameJamSWCharacter::OnResetVR);
+}
+
+void AGameJamSWCharacter::AddDebugMessage()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "AddDebugMessage Function On GameJamSWCharacter Called");
 }
 
 

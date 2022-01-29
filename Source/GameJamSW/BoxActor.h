@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameJamSWCharacter.h"
 #include "GameFramework/Actor.h"
 #include "BoxActor.generated.h"
 
@@ -20,6 +21,9 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
+
+	AGameJamSWCharacter * GameJamSWCharacter;
+
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
