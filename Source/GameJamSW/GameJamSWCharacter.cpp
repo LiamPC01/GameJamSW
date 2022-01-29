@@ -90,23 +90,24 @@ void AGameJamSWCharacter::Raycast()
 {
 	FHitResult OutHit;
 
-	FVector Start = FollowCamera->GetComponentLocation();
+	FVector Start = FollowCamera->GetComponentLocation(); // Start of raycast
 	FVector ForwardVector = FollowCamera->GetForwardVector();
 
-	Start = Start + (ForwardVector * CameraBoom->TargetArmLength); // starting point from player not camera
+	Start = Start + (ForwardVector * CameraBoom->TargetArmLength); // Starting point from player not camera
 	FVector End = Start + (ForwardVector * 5000.f);
 
 	FCollisionQueryParams CollisionParams;
-	CollisionParams.AddIgnoredActor(this->GetOwner());
+	CollisionParams.AddIgnoredActor(this->GetOwner()); // Can't shoot self
 
 	// Draw raycast debug line
 	DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 1, 0, 1);
 
-	bool IsHit = GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECC_Visibility, CollisionParams);
+	bool IsHit = GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECC_Pawn, CollisionParams); 
 
-	if (IsHit)
+	if (IsHit && OutHit.GetActor()->ActorHasTag("Enemy")) 
 	{
 		OutHit.GetActor()->Destroy();
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Purple, "Actor Destroyed");
 	}
 }
 
