@@ -16,6 +16,8 @@
 
 AGameJamSWCharacter::AGameJamSWCharacter()
 {
+
+	PlayerHealth = 100.f;
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 
@@ -172,3 +174,5 @@ void AGameJamSWCharacter::MoveRight(float Value)
 		AddMovementInput(Direction, Value);
 	}
 }
+
+

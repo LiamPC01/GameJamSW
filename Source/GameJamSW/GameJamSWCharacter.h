@@ -21,6 +21,8 @@ class AGameJamSWCharacter : public ACharacter
 public:
 	AGameJamSWCharacter();
 
+	float PlayerHealth;
+
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseTurnRate;
@@ -72,5 +74,10 @@ public:
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
 	void AddDebugMessage();
+
+	
+	
+
+
 };
 
