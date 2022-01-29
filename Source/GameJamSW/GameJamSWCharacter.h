@@ -31,8 +31,6 @@ public:
 
 protected:
 
-	void Raycast();
-
 	/** Resets HMD orientation in VR. */
 	void OnResetVR();
 
@@ -70,7 +68,5 @@ public:
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
-
-	void AddDebugMessage();
 };
 

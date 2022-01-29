@@ -8,8 +8,6 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "Engine/Engine.h"
-#include "DrawDebugHelpers.h"
 
 //////////////////////////////////////////////////////////////////////////
 // AGameJamSWCharacter
@@ -70,8 +68,6 @@ void AGameJamSWCharacter::SetupPlayerInputComponent(class UInputComponent* Playe
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("LookUpRate", this, &AGameJamSWCharacter::LookUpAtRate);
 
-	PlayerInputComponent->BindAction("Raycast", IE_Pressed, this, &AGameJamSWCharacter::Raycast);
-
 	// handle touch devices
 	PlayerInputComponent->BindTouch(IE_Pressed, this, &AGameJamSWCharacter::TouchStarted);
 	PlayerInputComponent->BindTouch(IE_Released, this, &AGameJamSWCharacter::TouchStopped);
@@ -80,36 +76,6 @@ void AGameJamSWCharacter::SetupPlayerInputComponent(class UInputComponent* Playe
 	PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &AGameJamSWCharacter::OnResetVR);
 }
 
-void AGameJamSWCharacter::AddDebugMessage()
-{
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "AddDebugMessage Function On GameJamSWCharacter Called");
-}
-
-
-void AGameJamSWCharacter::Raycast()
-{
-	FHitResult OutHit;
-
-	FVector Start = FollowCamera->GetComponentLocation(); // Start of raycast
-	FVector ForwardVector = FollowCamera->GetForwardVector();
-
-	Start = Start + (ForwardVector * CameraBoom->TargetArmLength); // Starting point from player not camera
-	FVector End = Start + (ForwardVector * 5000.f);
-
-	FCollisionQueryParams CollisionParams;
-	CollisionParams.AddIgnoredActor(this->GetOwner()); // Can't shoot self
-
-	// Draw raycast debug line
-	DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 1, 0, 1);
-
-	bool IsHit = GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECC_Pawn, CollisionParams); 
-
-	if (IsHit && OutHit.GetActor()->ActorHasTag("Enemy")) 
-	{
-		OutHit.GetActor()->Destroy();
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Purple, "Actor Destroyed");
-	}
-}
 
 void AGameJamSWCharacter::OnResetVR()
 {
@@ -124,12 +90,12 @@ void AGameJamSWCharacter::OnResetVR()
 
 void AGameJamSWCharacter::TouchStarted(ETouchIndex::Type FingerIndex, FVector Location)
 {
-	Jump();
+		Jump();
 }
 
 void AGameJamSWCharacter::TouchStopped(ETouchIndex::Type FingerIndex, FVector Location)
 {
-	StopJumping();
+		StopJumping();
 }
 
 void AGameJamSWCharacter::TurnAtRate(float Rate)
@@ -160,12 +126,12 @@ void AGameJamSWCharacter::MoveForward(float Value)
 
 void AGameJamSWCharacter::MoveRight(float Value)
 {
-	if ((Controller != nullptr) && (Value != 0.0f))
+	if ( (Controller != nullptr) && (Value != 0.0f) )
 	{
 		// find out which way is right
 		const FRotator Rotation = Controller->GetControlRotation();
 		const FRotator YawRotation(0, Rotation.Yaw, 0);
-
+	
 		// get right vector 
 		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 		// add movement in that direction
