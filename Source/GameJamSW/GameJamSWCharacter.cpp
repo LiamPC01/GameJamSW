@@ -9,6 +9,7 @@
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Engine/Engine.h"
+#include "DrawDebugHelpers.h"
 
 //////////////////////////////////////////////////////////////////////////
 // AGameJamSWCharacter
@@ -69,6 +70,8 @@ void AGameJamSWCharacter::SetupPlayerInputComponent(class UInputComponent* Playe
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("LookUpRate", this, &AGameJamSWCharacter::LookUpAtRate);
 
+	PlayerInputComponent->BindAction("Raycast", IE_Pressed, this, &AGameJamSWCharacter::Raycast);
+
 	// handle touch devices
 	PlayerInputComponent->BindTouch(IE_Pressed, this, &AGameJamSWCharacter::TouchStarted);
 	PlayerInputComponent->BindTouch(IE_Released, this, &AGameJamSWCharacter::TouchStopped);
@@ -83,6 +86,30 @@ void AGameJamSWCharacter::AddDebugMessage()
 }
 
 
+void AGameJamSWCharacter::Raycast()
+{
+	FHitResult OutHit;
+
+	FVector Start = FollowCamera->GetComponentLocation();
+	FVector ForwardVector = FollowCamera->GetForwardVector();
+
+	Start = Start + (ForwardVector * CameraBoom->TargetArmLength); // starting point from player not camera
+	FVector End = Start + (ForwardVector * 5000.f);
+
+	FCollisionQueryParams CollisionParams;
+	CollisionParams.AddIgnoredActor(this->GetOwner());
+
+	// Draw raycast debug line
+	DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 1, 0, 1);
+
+	bool IsHit = GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECC_Visibility, CollisionParams);
+
+	if (IsHit)
+	{
+		OutHit.GetActor()->Destroy();
+	}
+}
+
 void AGameJamSWCharacter::OnResetVR()
 {
 	// If GameJamSW is added to a project via 'Add Feature' in the Unreal Editor the dependency on HeadMountedDisplay in GameJamSW.Build.cs is not automatically propagated
@@ -96,12 +123,12 @@ void AGameJamSWCharacter::OnResetVR()
 
 void AGameJamSWCharacter::TouchStarted(ETouchIndex::Type FingerIndex, FVector Location)
 {
-		Jump();
+	Jump();
 }
 
 void AGameJamSWCharacter::TouchStopped(ETouchIndex::Type FingerIndex, FVector Location)
 {
-		StopJumping();
+	StopJumping();
 }
 
 void AGameJamSWCharacter::TurnAtRate(float Rate)
@@ -132,12 +159,12 @@ void AGameJamSWCharacter::MoveForward(float Value)
 
 void AGameJamSWCharacter::MoveRight(float Value)
 {
-	if ( (Controller != nullptr) && (Value != 0.0f) )
+	if ((Controller != nullptr) && (Value != 0.0f))
 	{
 		// find out which way is right
 		const FRotator Rotation = Controller->GetControlRotation();
 		const FRotator YawRotation(0, Rotation.Yaw, 0);
-	
+
 		// get right vector 
 		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 		// add movement in that direction

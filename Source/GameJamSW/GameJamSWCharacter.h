@@ -31,6 +31,8 @@ public:
 
 protected:
 
+	void Raycast();
+
 	/** Resets HMD orientation in VR. */
 	void OnResetVR();
 
