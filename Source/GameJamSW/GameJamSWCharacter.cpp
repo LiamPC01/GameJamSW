@@ -96,13 +96,13 @@ void AGameJamSWCharacter::Raycast()
 	FVector ForwardVector = FollowCamera->GetForwardVector();
 
 	Start = Start + (ForwardVector * CameraBoom->TargetArmLength); // Starting point from player not camera
-	FVector End = Start + (ForwardVector * 5000.f);
+	FVector End = Start + (ForwardVector * 2000.f);
 
 	FCollisionQueryParams CollisionParams;
 	CollisionParams.AddIgnoredActor(this->GetOwner()); // Can't shoot self
 
 	// Draw raycast debug line
-	DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 1, 0, 1);
+	DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 0.1f, 0, 2);
 
 	bool IsHit = GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECC_Pawn, CollisionParams); 
 
