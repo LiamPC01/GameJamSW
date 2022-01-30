@@ -109,7 +109,6 @@ void AGameJamSWCharacter::Raycast()
 	if (IsHit && OutHit.GetActor()->ActorHasTag("Enemy")) 
 	{
 		OutHit.GetActor()->Destroy();
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Purple, "Actor Destroyed");
 	}
 }
 
