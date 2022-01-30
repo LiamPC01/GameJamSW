@@ -48,7 +48,8 @@ void ABoxActor::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Othe
 {
 	if (GameJamSWCharacter && GameJamSWCharacter == OtherActor)
 	{
-		GameJamSWCharacter->AddDebugMessage();
+		GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Green, "LEVEL COMPLETE");
+
 	}
 }
 
